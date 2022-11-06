@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1000px;
+                 height: 700px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"betweenness_centrality": 0.6839526411657557, "closeness_centrality": 0.6635531833778117, "degree_centrality": 0.5901639344262295, "font": {"color": "white"}, "group": 4, "id": "Geralt", "label": "Geralt", "shape": "dot", "size": 36}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.416537034821108, "degree_centrality": 0.11475409836065574, "font": {"color": "white"}, "group": 1, "id": "Niedamir", "label": "Niedamir", "shape": "dot", "size": 7}, {"betweenness_centrality": 0.001092896174863388, "closeness_centrality": 0.4195998071359691, "degree_centrality": 0.13114754098360656, "font": {"color": "white"}, "group": 1, "id": "Eyck", "label": "Eyck", "shape": "dot", "size": 8}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.416537034821108, "degree_centrality": 0.11475409836065574, "font": {"color": "white"}, "group": 1, "id": "Dorregaray", "label": "Dorregaray", "shape": "dot", "size": 7}, {"betweenness_centrality": 0.00032786885245901645, "closeness_centrality": 0.4195998071359691, "degree_centrality": 0.13114754098360656, "font": {"color": "white"}, "group": 1, "id": "Yarpen", "label": "Yarpen", "shape": "dot", "size": 8}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.4105436961905885, "degree_centrality": 0.0819672131147541, "font": {"color": "white"}, "group": 1, "id": "Kennet", "label": "Kennet", "shape": "dot", "size": 5}, {"betweenness_centrality": 0.032021857923497266, "closeness_centrality": 0.42270795385549487, "degree_centrality": 0.14754098360655737, "font": {"color": "white"}, "group": 1, "id": "Boholt", "label": "Boholt", "shape": "dot", "size": 9}, {"betweenness_centrality": 0.06041894353369764, "closeness_centrality": 0.47954263672682185, "degree_centrality": 0.26229508196721313, "font": {"color": "white"}, "group": 1, "id": "Yennefer", "label": "Yennefer", "shape": "dot", "size": 16}, {"betweenness_centrality": 0.00032786885245901645, "closeness_centrality": 0.4195998071359691, "degree_centrality": 0.13114754098360656, "font": {"color": "white"}, "group": 1, "id": "Gyllenstiern", "label": "Gyllenstiern", "shape": "dot", "size": 8}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.4018702378203648, "degree_centrality": 0.04918032786885246, "font": {"color": "white"}, "group": 1, "id": "Villentretenmerth", "label": "Villentretenmerth", "shape": "dot", "size": 3}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3990599564370056, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 4, "id": "Herbolth", "label": "Herbolth", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3962887067395264, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 4, "id": "Ivo", "label": "Ivo", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.000273224043715847, "closeness_centrality": 0.4018702378203648, "degree_centrality": 0.04918032786885246, "font": {"color": "white"}, "group": 4, "id": "Istredd", "label": "Istredd", "shape": "dot", "size": 3}, {"betweenness_centrality": 0.000500910746812386, "closeness_centrality": 0.40761124121779857, "degree_centrality": 0.04918032786885246, "font": {"color": "white"}, "group": 4, "id": "Two", "label": "Two", "shape": "dot", "size": 3}, {"betweenness_centrality": 0.03715846994535519, "closeness_centrality": 0.42906446443978796, "degree_centrality": 0.0819672131147541, "font": {"color": "white"}, "group": 5, "id": "Dainty", "label": "Dainty", "shape": "dot", "size": 5}, {"betweenness_centrality": 0.09344262295081968, "closeness_centrality": 0.4195998071359691, "degree_centrality": 0.0819672131147541, "font": {"color": "white"}, "group": 3, "id": "Vimme", "label": "Vimme", "shape": "dot", "size": 5}, {"betweenness_centrality": 0.000546448087431694, "closeness_centrality": 0.4105436961905885, "degree_centrality": 0.04918032786885246, "font": {"color": "white"}, "group": 5, "id": "Vespula", "label": "Vespula", "shape": "dot", "size": 3}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.41351865051081016, "degree_centrality": 0.04918032786885246, "font": {"color": "white"}, "group": 5, "id": "Dudu", "label": "Dudu", "shape": "dot", "size": 3}, {"betweenness_centrality": 0.09763205828779598, "closeness_centrality": 0.4423687889185411, "degree_centrality": 0.11475409836065574, "font": {"color": "white"}, "group": 5, "id": "Dandelion", "label": "Dandelion", "shape": "dot", "size": 7}, {"betweenness_centrality": 0.01557377049180328, "closeness_centrality": 0.4258624908245657, "degree_centrality": 0.0819672131147541, "font": {"color": "white"}, "group": 5, "id": "Sh\u0027eenaz", "label": "Sh\u0027eenaz", "shape": "dot", "size": 5}, {"betweenness_centrality": 0.07841530054644809, "closeness_centrality": 0.4323149528067561, "degree_centrality": 0.11475409836065574, "font": {"color": "white"}, "group": 5, "id": "Essi", "label": "Essi", "shape": "dot", "size": 7}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3962887067395264, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 4, "id": "Gerard", "label": "Gerard", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3990599564370056, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 4, "id": "Veverka", "label": "Veverka", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.04102914389799637, "closeness_centrality": 0.43896595208070616, "degree_centrality": 0.13114754098360656, "font": {"color": "white"}, "group": 2, "id": "Braenn", "label": "Braenn", "shape": "dot", "size": 8}, {"betweenness_centrality": 0.08532786885245902, "closeness_centrality": 0.4458247950819672, "degree_centrality": 0.1639344262295082, "font": {"color": "white"}, "group": 2, "id": "Eithn\u00e9", "label": "Eithn\u00e9", "shape": "dot", "size": 10}, {"betweenness_centrality": 0.03169398907103825, "closeness_centrality": 0.41351865051081016, "degree_centrality": 0.04918032786885246, "font": {"color": "white"}, "group": 4, "id": "Voymir", "label": "Voymir", "shape": "dot", "size": 3}, {"betweenness_centrality": 0.07437158469945356, "closeness_centrality": 0.4677506046761623, "degree_centrality": 0.19672131147540983, "font": {"color": "white"}, "group": 2, "id": "Ciri", "label": "Ciri", "shape": "dot", "size": 12}, {"betweenness_centrality": 0.015400728597449913, "closeness_centrality": 0.4195998071359691, "degree_centrality": 0.0819672131147541, "font": {"color": "white"}, "group": 2, "id": "Ervyll", "label": "Ervyll", "shape": "dot", "size": 5}, {"betweenness_centrality": 0.0030054644808743176, "closeness_centrality": 0.4323149528067561, "degree_centrality": 0.0819672131147541, "font": {"color": "white"}, "group": 2, "id": "Freixenet", "label": "Freixenet", "shape": "dot", "size": 5}, {"betweenness_centrality": 0.030701275045537338, "closeness_centrality": 0.4323149528067561, "degree_centrality": 0.09836065573770492, "font": {"color": "white"}, "group": 2, "id": "Venzlav", "label": "Venzlav", "shape": "dot", "size": 6}, {"betweenness_centrality": 0.0003825136612021858, "closeness_centrality": 0.4105436961905885, "degree_centrality": 0.04918032786885246, "font": {"color": "white"}, "group": 2, "id": "Kistrin", "label": "Kistrin", "shape": "dot", "size": 3}, {"betweenness_centrality": 0.06360655737704918, "closeness_centrality": 0.4258624908245657, "degree_centrality": 0.09836065573770492, "font": {"color": "white"}, "group": 2, "id": "Levecque", "label": "Levecque", "shape": "dot", "size": 6}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.4047203813510057, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 2, "id": "Mousesack", "label": "Mousesack", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.06481785063752277, "closeness_centrality": 0.4258624908245657, "degree_centrality": 0.09836065573770492, "font": {"color": "white"}, "group": 4, "id": "Yurga", "label": "Yurga", "shape": "dot", "size": 6}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.4047203813510057, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 4, "id": "Visenna", "label": "Visenna", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3962887067395264, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 4, "id": "Lytta", "label": "Lytta", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0005464480874316939, "closeness_centrality": 0.40761124121779857, "degree_centrality": 0.04918032786885246, "font": {"color": "white"}, "group": 4, "id": "Roach", "label": "Roach", "shape": "dot", "size": 3}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.29567654803363624, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 1, "id": "Crinfrid", "label": "Crinfrid", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.29877263754184186, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 5, "id": "Rhyd", "label": "Rhyd", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.06229508196721312, "closeness_centrality": 0.3118337364507749, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 5, "id": "Mestvin", "label": "Mestvin", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.2941524421159371, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 3, "id": "Ther", "label": "Ther", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.2941524421159371, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 3, "id": "Sulimir", "label": "Sulimir", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.2941524421159371, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 3, "id": "Rhundurin", "label": "Rhundurin", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3019342527539249, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 5, "id": "Zelest", "label": "Zelest", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.03169398907103825, "closeness_centrality": 0.23876809108992386, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 5, "id": "Dalia", "label": "Dalia", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.19213997902522492, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 5, "id": "Teleri", "label": "Teleri", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3003451251078516, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 5, "id": "Duke", "label": "Duke", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3003451251078516, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 5, "id": "Cynthia", "label": "Cynthia", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.01639344262295082, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 0, "id": "Juan", "label": "Juan", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.01639344262295082, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 0, "id": "Putzi", "label": "Putzi", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3260889929742389, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 2, "id": "Vesemir", "label": "Vesemir", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.31354710862907587, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 2, "id": "Mona", "label": "Mona", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.31354710862907587, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 2, "id": "Forest", "label": "Forest", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3170309653916211, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 2, "id": "Pavetta", "label": "Pavetta", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.30680416005640754, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 2, "id": "Dunca", "label": "Dunca", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3118337364507749, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 2, "id": "Morenn", "label": "Morenn", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.29115088658414184, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 4, "id": "Marck", "label": "Marck", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.3084625609215773, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 2, "id": "Viraxas", "label": "Viraxas", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.2972165300546448, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 2, "id": "Junghans", "label": "Junghans", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.2972165300546448, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 2, "id": "Brick", "label": "Brick", "shape": "dot", "size": 1}, {"betweenness_centrality": 0.03169398907103825, "closeness_centrality": 0.3003451251078516, "degree_centrality": 0.03278688524590164, "font": {"color": "white"}, "group": 4, "id": "Atlan", "label": "Atlan", "shape": "dot", "size": 2}, {"betweenness_centrality": 0.0, "closeness_centrality": 0.23010312004230565, "degree_centrality": 0.01639344262295082, "font": {"color": "white"}, "group": 4, "id": "Vanielle", "label": "Vanielle", "shape": "dot", "size": 1}]);
+                  edges = new vis.DataSet([{"from": "Geralt", "to": "Niedamir", "value": 19, "width": 1}, {"from": "Geralt", "to": "Eyck", "value": 52, "width": 1}, {"from": "Geralt", "to": "Dorregaray", "value": 36, "width": 1}, {"from": "Geralt", "to": "Yarpen", "value": 15, "width": 1}, {"from": "Geralt", "to": "Kennet", "value": 2, "width": 1}, {"from": "Geralt", "to": "Boholt", "value": 35, "width": 1}, {"from": "Geralt", "to": "Yennefer", "value": 197, "width": 1}, {"from": "Geralt", "to": "Gyllenstiern", "value": 21, "width": 1}, {"from": "Geralt", "to": "Villentretenmerth", "value": 14, "width": 1}, {"from": "Geralt", "to": "Herbolth", "value": 5, "width": 1}, {"from": "Geralt", "to": "Ivo", "value": 4, "width": 1}, {"from": "Geralt", "to": "Istredd", "value": 26, "width": 1}, {"from": "Geralt", "to": "Two", "value": 11, "width": 1}, {"from": "Geralt", "to": "Dainty", "value": 36, "width": 1}, {"from": "Geralt", "to": "Vimme", "value": 7, "width": 1}, {"from": "Geralt", "to": "Vespula", "value": 10, "width": 1}, {"from": "Geralt", "to": "Dudu", "value": 4, "width": 1}, {"from": "Geralt", "to": "Dandelion", "value": 27, "width": 1}, {"from": "Geralt", "to": "Sh\u0027eenaz", "value": 24, "width": 1}, {"from": "Geralt", "to": "Essi", "value": 96, "width": 1}, {"from": "Geralt", "to": "Gerard", "value": 1, "width": 1}, {"from": "Geralt", "to": "Veverka", "value": 4, "width": 1}, {"from": "Geralt", "to": "Braenn", "value": 39, "width": 1}, {"from": "Geralt", "to": "Eithn\u00e9", "value": 48, "width": 1}, {"from": "Geralt", "to": "Voymir", "value": 5, "width": 1}, {"from": "Geralt", "to": "Ciri", "value": 90, "width": 1}, {"from": "Geralt", "to": "Ervyll", "value": 15, "width": 1}, {"from": "Geralt", "to": "Freixenet", "value": 11, "width": 1}, {"from": "Geralt", "to": "Venzlav", "value": 11, "width": 1}, {"from": "Geralt", "to": "Kistrin", "value": 5, "width": 1}, {"from": "Geralt", "to": "Levecque", "value": 11, "width": 1}, {"from": "Geralt", "to": "Mousesack", "value": 4, "width": 1}, {"from": "Geralt", "to": "Yurga", "value": 22, "width": 1}, {"from": "Geralt", "to": "Visenna", "value": 9, "width": 1}, {"from": "Geralt", "to": "Lytta", "value": 9, "width": 1}, {"from": "Geralt", "to": "Roach", "value": 6, "width": 1}, {"from": "Niedamir", "to": "Gyllenstiern", "value": 33, "width": 1}, {"from": "Niedamir", "to": "Yarpen", "value": 13, "width": 1}, {"from": "Niedamir", "to": "Yennefer", "value": 16, "width": 1}, {"from": "Niedamir", "to": "Dorregaray", "value": 13, "width": 1}, {"from": "Niedamir", "to": "Boholt", "value": 14, "width": 1}, {"from": "Niedamir", "to": "Eyck", "value": 15, "width": 1}, {"from": "Eyck", "to": "Boholt", "value": 25, "width": 1}, {"from": "Eyck", "to": "Dorregaray", "value": 29, "width": 1}, {"from": "Eyck", "to": "Yennefer", "value": 10, "width": 1}, {"from": "Eyck", "to": "Yarpen", "value": 23, "width": 1}, {"from": "Eyck", "to": "Villentretenmerth", "value": 6, "width": 1}, {"from": "Eyck", "to": "Gyllenstiern", "value": 16, "width": 1}, {"from": "Dorregaray", "to": "Yennefer", "value": 100, "width": 1}, {"from": "Dorregaray", "to": "Yarpen", "value": 8, "width": 1}, {"from": "Dorregaray", "to": "Gyllenstiern", "value": 12, "width": 1}, {"from": "Dorregaray", "to": "Boholt", "value": 36, "width": 1}, {"from": "Yennefer", "to": "Boholt", "value": 66, "width": 1}, {"from": "Yennefer", "to": "Gyllenstiern", "value": 19, "width": 1}, {"from": "Yennefer", "to": "Kennet", "value": 4, "width": 1}, {"from": "Yennefer", "to": "Yarpen", "value": 88, "width": 1}, {"from": "Yennefer", "to": "Villentretenmerth", "value": 8, "width": 1}, {"from": "Yennefer", "to": "Istredd", "value": 55, "width": 1}, {"from": "Yennefer", "to": "Vespula", "value": 5, "width": 1}, {"from": "Yennefer", "to": "Veverka", "value": 4, "width": 1}, {"from": "Yennefer", "to": "Essi", "value": 27, "width": 1}, {"from": "Yennefer", "to": "Sh\u0027eenaz", "value": 11, "width": 1}, {"from": "Yennefer", "to": "Eithn\u00e9", "value": 5, "width": 1}, {"from": "Yennefer", "to": "Yurga", "value": 2, "width": 1}, {"from": "Yarpen", "to": "Boholt", "value": 55, "width": 1}, {"from": "Yarpen", "to": "Gyllenstiern", "value": 6, "width": 1}, {"from": "Yarpen", "to": "Kennet", "value": 6, "width": 1}, {"from": "Gyllenstiern", "to": "Boholt", "value": 19, "width": 1}, {"from": "Gyllenstiern", "to": "Kennet", "value": 5, "width": 1}, {"from": "Kennet", "to": "Boholt", "value": 8, "width": 1}, {"from": "Boholt", "to": "Crinfrid", "value": 6, "width": 1}, {"from": "Istredd", "to": "Herbolth", "value": 10, "width": 1}, {"from": "Two", "to": "Ciri", "value": 3, "width": 1}, {"from": "Two", "to": "Roach", "value": 4, "width": 1}, {"from": "Vespula", "to": "Dandelion", "value": 10, "width": 1}, {"from": "Dainty", "to": "Dandelion", "value": 10, "width": 1}, {"from": "Dainty", "to": "Rhyd", "value": 1, "width": 1}, {"from": "Dainty", "to": "Vimme", "value": 17, "width": 1}, {"from": "Dainty", "to": "Dudu", "value": 1, "width": 1}, {"from": "Dandelion", "to": "Dudu", "value": 1, "width": 1}, {"from": "Dandelion", "to": "Sh\u0027eenaz", "value": 8, "width": 1}, {"from": "Dandelion", "to": "Mestvin", "value": 5, "width": 1}, {"from": "Dandelion", "to": "Essi", "value": 19, "width": 1}, {"from": "Vimme", "to": "Ther", "value": 4, "width": 1}, {"from": "Vimme", "to": "Sulimir", "value": 1, "width": 1}, {"from": "Vimme", "to": "Rhundurin", "value": 6, "width": 1}, {"from": "Sh\u0027eenaz", "to": "Essi", "value": 7, "width": 1}, {"from": "Sh\u0027eenaz", "to": "Zelest", "value": 2, "width": 1}, {"from": "Dalia", "to": "Teleri", "value": 5, "width": 1}, {"from": "Dalia", "to": "Mestvin", "value": 6, "width": 1}, {"from": "Essi", "to": "Duke", "value": 5, "width": 1}, {"from": "Essi", "to": "Zelest", "value": 4, "width": 1}, {"from": "Essi", "to": "Cynthia", "value": 4, "width": 1}, {"from": "Juan", "to": "Putzi", "value": 6, "width": 1}, {"from": "Braenn", "to": "Ciri", "value": 47, "width": 1}, {"from": "Braenn", "to": "Eithn\u00e9", "value": 33, "width": 1}, {"from": "Braenn", "to": "Voymir", "value": 6, "width": 1}, {"from": "Braenn", "to": "Vesemir", "value": 6, "width": 1}, {"from": "Braenn", "to": "Freixenet", "value": 1, "width": 1}, {"from": "Braenn", "to": "Mona", "value": 8, "width": 1}, {"from": "Braenn", "to": "Forest", "value": 4, "width": 1}, {"from": "Ciri", "to": "Kistrin", "value": 19, "width": 1}, {"from": "Ciri", "to": "Eithn\u00e9", "value": 79, "width": 1}, {"from": "Ciri", "to": "Vesemir", "value": 3, "width": 1}, {"from": "Ciri", "to": "Freixenet", "value": 10, "width": 1}, {"from": "Ciri", "to": "Pavetta", "value": 1, "width": 1}, {"from": "Ciri", "to": "Venzlav", "value": 7, "width": 1}, {"from": "Ciri", "to": "Levecque", "value": 15, "width": 1}, {"from": "Ciri", "to": "Mousesack", "value": 6, "width": 1}, {"from": "Ciri", "to": "Yurga", "value": 4, "width": 1}, {"from": "Dunca", "to": "Eithn\u00e9", "value": 1, "width": 1}, {"from": "Eithn\u00e9", "to": "Freixenet", "value": 2, "width": 1}, {"from": "Eithn\u00e9", "to": "Venzlav", "value": 25, "width": 1}, {"from": "Eithn\u00e9", "to": "Morenn", "value": 9, "width": 1}, {"from": "Eithn\u00e9", "to": "Mona", "value": 3, "width": 1}, {"from": "Eithn\u00e9", "to": "Forest", "value": 4, "width": 1}, {"from": "Marck", "to": "Voymir", "value": 5, "width": 1}, {"from": "Ervyll", "to": "Kistrin", "value": 2, "width": 1}, {"from": "Ervyll", "to": "Venzlav", "value": 11, "width": 1}, {"from": "Ervyll", "to": "Viraxas", "value": 6, "width": 1}, {"from": "Ervyll", "to": "Levecque", "value": 2, "width": 1}, {"from": "Freixenet", "to": "Levecque", "value": 7, "width": 1}, {"from": "Venzlav", "to": "Viraxas", "value": 4, "width": 1}, {"from": "Venzlav", "to": "Morenn", "value": 4, "width": 1}, {"from": "Levecque", "to": "Junghans", "value": 11, "width": 1}, {"from": "Levecque", "to": "Brick", "value": 6, "width": 1}, {"from": "Yurga", "to": "Visenna", "value": 2, "width": 1}, {"from": "Yurga", "to": "Atlan", "value": 2, "width": 1}, {"from": "Yurga", "to": "Roach", "value": 2, "width": 1}, {"from": "Atlan", "to": "Vanielle", "value": 6, "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
