@@ -115,6 +115,10 @@ if angle != 0:
 
 ''' ---------------------------------------------------------------'''
 ## Starting the language translation and image preprocessing steps
+image = get_grayscale(image)
+image = remove_noise(image)
+image = thresholding(image)
+
 result = []
 
 source_tess = df[df.eq(args['lang']).any(1)]['tesseract_code'].tolist()[0]
@@ -124,10 +128,6 @@ target_google = df[df.eq(args['to']).any(1)]['google_translate_code'].tolist()[0
 options = '-l {} --psm {}'.format(source_tess, args['psm'])
 
 text = pytesseract.image_to_string(image, config = options)
-
-image = get_grayscale(image)
-image = remove_noise(image)
-image = thresholding(image)
 
 sentences = text.replace('\n', ' ').split('.')
 
