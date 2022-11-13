@@ -16,7 +16,7 @@ import cv2
 import pytesseract
 
 ## Setting the API KEY to use in case of 'lang_detect' function
-API_KEY = '9d83b7f02634514f56b7f59076eb15eb'
+API_KEY = '******'
 
 ## Getting the GoogleTranslator as a dictionary for language and language code
 langs_dict = GoogleTranslator().get_supported_languages(as_dict=True)
